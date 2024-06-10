@@ -2,7 +2,12 @@
   'use strict'
 
   function DOM(elements) {
+    if (!(this instanceof DOM))
+      return new DOM(elements)
+
     this.element = document.querySelectorAll(elements);
+    // if(this.element.length === 1)
+    //   return this.get()
   }
   DOM.prototype.forEach = function forEach(){
     return Array.prototype.forEach.apply(this.element, arguments)
@@ -70,7 +75,9 @@
     })
   }
 
-  DOM.prototype.get = function get() {
+  DOM.prototype.get = function get(index) {
+    if(!index)
+      return this.element[0]
     return this.element
   }
   window.DOM = DOM
