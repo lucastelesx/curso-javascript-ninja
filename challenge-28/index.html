@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      background-image: url("https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
+      background-image: url("shirobg.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: top center;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <form data-js="form-cep">
+      <input id="cep" type="text" data-cep="cep" name="cep" value="" size="10" maxlength="9">
+      <button type="submit">Consultar</button>
+    </form>
+    <p>Status: <span id="status-message" class="status success"></span></p>
+  </header>
+  <main>
+    <p data-end="logradouro">Logradouro: </p>
+    <p data-end="bairro">Bairro: </p>
+    <p data-end="estado">Estado: </p>
+    <p data-end="cidade">Cidade: </p>
+    <p data-end="cep">CEP: </p>
+  </main>
+
+  <script src="dom.js"></script>
+  <script src="challenge-28.js"></script>
+</body>
+
+</html>

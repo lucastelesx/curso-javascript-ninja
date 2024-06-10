@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-image: url("https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: top center;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    main {
+      display: grid;
+      grid-template-areas:
+        "input input input input"
+        "seven eight nine div"
+        "four five six mult"
+        "one two three sub"
+        "zero zero equal add"
+        "clear clear clear clear";
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto;
+      gap: 10px;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.275);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    button:hover:not(:first-child) {
+      cursor: pointer;
+      filter: brightness(0.8);
+    }
+
+    input[data-calc="input"] {
+      grid-area: input;
+      width: 100%;
+      padding: 20px;
+      font-size: 2rem;
+      text-align: right;
+      border: none;
+      background-color: #e0e0e0;
+      border-radius: 5px;
+    }
+
+    button[data-number] {
+      font-size: 1.5rem;
+      padding: 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #f9f9f9;
+    }
+
+    button[data-operation="soma"],
+    button[data-operation="subtracao"],
+    button[data-operation="multiplicacao"],
+    button[data-operation="divisao"],
+    button[data-calc="resultado"],
+    button[data-calc="limpa"] {
+      font-size: 1.5rem;
+      padding: 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #d9d9d9;
+    }
+
+    button[value="0"] {
+      grid-area: zero;
+    }
+
+    button[data-calc="resultado"] {
+      grid-area: equal;
+    }
+
+    button[data-calc="limpa"] {
+      grid-area: clear;
+    }
+
+    button[data-operation="soma"] {
+      grid-area: add;
+    }
+
+    button[data-operation="subtracao"] {
+      grid-area: sub;
+    }
+
+    button[data-operation="multiplicacao"] {
+      grid-area: mult;
+    }
+
+    button[data-operation="divisao"] {
+      grid-area: div;
+    }
+
+    button:nth-child(2) {
+      grid-area: seven;
+    }
+
+    button:nth-child(3) {
+      grid-area: eight;
+    }
+
+    button:nth-child(4) {
+      grid-area: nine;
+    }
+
+    button:nth-child(5) {
+      grid-area: four;
+    }
+
+    button:nth-child(6) {
+      grid-area: five;
+    }
+
+    button:nth-child(7) {
+      grid-area: six;
+    }
+
+    button:nth-child(8) {
+      grid-area: one;
+    }
+
+    button:nth-child(9) {
+      grid-area: two;
+    }
+
+    button:nth-child(10) {
+      grid-area: three;
+    }
+
+    button:nth-child(11) {
+      grid-area: zero;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <input type="text" value="0" readonly data-calc="input" />
+
+    <button data-number value="0">0</button>
+    <button data-number value="1">1</button>
+    <button data-number value="2">2</button>
+    <button data-number value="3">3</button>
+    <button data-number value="4">4</button>
+    <button data-number value="5">5</button>
+    <button data-number value="6">6</button>
+    <button data-number value="7">7</button>
+    <button data-number value="8">8</button>
+    <button data-number value="9">9</button>
+
+    <button value="+" data-operation="soma">+</button>
+    <button value="-" data-operation="subtracao">-</button>
+    <button value="x" data-operation="multiplicacao">x</button>
+    <button value="/" data-operation="divisao">/</button>
+    <button value="=" data-calc="resultado">=</button>
+    <button value="CE" data-calc="limpa">CE</button>
+  </main>
+
+  <script src="challenge-23.js"></script>
+</body>
+
+</html>

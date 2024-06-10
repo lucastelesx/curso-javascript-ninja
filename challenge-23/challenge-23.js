@@ -1,3 +1,4 @@
+
 /*
 Vamos desenvolver mais um projeto. A ideia é fazer uma mini-calculadora.
 As regras são:
@@ -23,3 +24,83 @@ multiplicação (x), então no input deve aparecer "1+2x".
 input;
 - Ao pressionar o botão "CE", o input deve ficar zerado.
 */
+(function(doc,win){
+'use strict'
+
+var 
+  $elInput = doc.querySelector('[data-calc="input"]'),
+  $btOperation = doc.querySelectorAll('[data-operation]'),
+  $btNumero = doc.querySelectorAll('[data-number]'),
+  $btResultado = doc.querySelector('[data-calc="resultado"]'),
+  $btLimpa = doc.querySelector('[data-calc="limpa"]')
+
+  //var compareOperations = Array.prototype.slice.call($btOperation)
+  //var compareOperations = [...$btOperation]
+  //var compareOperations = Array.from($btOperation)
+  var compareOperations = ["+", "-", "x", "/"]
+
+  function cleanInput(){
+    $elInput.value = 0
+  }
+  
+  function addNumber() {
+    var numero = this.textContent
+    //console.log(numero);
+    if ($elInput.value === '0') {
+        $elInput.value = numero
+    } else {
+        $elInput.value += numero;
+    }
+  }
+
+  
+  function addOperation(){
+    $elInput.value = removeLastItemIfIsAnOperator($elInput.value)
+    $elInput.value += this.textContent
+  }
+  
+  function isLastItemOperation(number){
+    var lastChar = number.value.split('').pop()
+    return compareOperations.includes(lastChar)
+  }
+
+  function removeLastItemIfIsAnOperator(number){
+    if(isLastItemOperation(number))
+      return number.slice(0,-1)
+    return number
+  }
+  
+  function calcResult(){
+    $elInput.value= removeLastItemIfIsAnOperator($elInput.value)
+    var allValues = $elInput.value.match(/\d+[+x/-]?/g)
+    $elInput.value = allValues.reduce(function(accumulated, actual){
+      var firstValue = accumulated.slice(0, -1)  
+      var operator = accumulated.split('').pop()
+      var lastValue = removeLastItemIfIsAnOperator(actual);
+      var lastOperator = isLastItemOperation(actual) ? actual.split('').pop() : ''
+      
+      switch(operator){
+        case '+':
+          return ( Number(firstValue) + Number(lastValue) ) + lastOperator 
+        case '-':
+          return ( Number(firstValue) - Number(lastValue) ) + lastOperator
+        case 'x':
+          return ( Number(firstValue) * Number(lastValue) ) + lastOperator
+        case '/':
+          return ( Number(firstValue) / Number(lastValue) ) + lastOperator
+      }
+    })
+  }
+  
+  Array.prototype.forEach.call($btNumero, function(button) {
+    button.addEventListener('click', addNumber, false);
+  });
+  Array.prototype.forEach.call($btOperation, function(button) {
+    button.addEventListener('click', addOperation, false);
+  });
+  
+  //$btSoma.addEventListener('click', soma)//ok
+  $btLimpa.addEventListener('click', cleanInput, false)//ok
+  $btResultado.addEventListener('click', calcResult, false)//ok
+
+})(document,window)

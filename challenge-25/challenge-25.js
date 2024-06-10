@@ -14,3 +14,29 @@ https://developer.mozilla.org/en-US/docs/Web/Events#Categories
 Tente aplicar na prática alguns dos eventos que estão ali e coloque nesse
 desafio os experimentos legais que você conseguir desenvolver :D
 */
+(function (win,doc){
+
+
+const
+  $mainHeader = doc.getElementById('MainHeader'),
+  $mainFooter = doc.getElementById('mainFooter'),
+  $inputText = doc.querySelector('input')
+
+let typingTimeout
+
+  function removeTypingClass() {
+    $inputText.classList.remove('typing');
+  }
+
+  $inputText.addEventListener('input', () => {
+    $inputText.classList.add('typing')
+    
+    clearTimeout(typingTimeout);
+
+    typingTimeout = setTimeout(removeTypingClass, 3000);
+  })
+
+  $inputText.addEventListener('blur', () => {
+    removeTypingClass();
+});
+})(window, document)

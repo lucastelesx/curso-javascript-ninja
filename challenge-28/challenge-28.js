@@ -25,3 +25,98 @@
   - Utilize a lib DOM criada anteriormente para facilitar a manipulação e
   adicionar as informações em tela.
   */
+(function (DOM){
+  'use strict'
+  
+  function app(){
+    const 
+      $formCEP = new DOM('[data-js="form-cep"]'),
+      $inputCep = new DOM('#cep'),
+      $infoLogradouro = new DOM('[data-end="logradouro"]'),
+      $infoBairro = new DOM('[data-end="bairro"]'),
+      $infoEstado = new DOM('[data-end="estado"]'),
+      $infoCidade = new DOM('[data-end="cidade"]'),
+      $infoCEP = new DOM('[data-end="cep"]'),
+      $statusMessage = new DOM('#status-message'),
+      ajax = new XMLHttpRequest()
+
+      $formCEP.on('submit', handleSubmitFormCep)
+
+    function handleSubmitFormCep(event){
+      event.preventDefault()
+      let url = getUrl()
+      
+      ajax.open('GET', url, true)
+      ajax.send();
+      getMessage('loading')
+      ajax.addEventListener('readystatechange', handleReadyStateChange, false)
+    }
+
+    function handleReadyStateChange(){
+      if ( isRequestSuccessful() ) {
+        getMessage('ok')
+        fillCepFields()
+      }
+    }
+
+    function isRequestSuccessful (){
+      return ajax.readyState === 4 && ajax.status === 200 
+    }
+  
+    function parseData(){
+      let result
+      try{
+        result = JSON.parse(ajax.responseText);
+      }catch(e){
+        result = null
+      }
+      return result
+    }
+  
+    function fillCepFields(){
+      let data = parseData()
+      if (!data){
+        getMessage('error')
+        data = clearData()
+      }
+  
+      $infoLogradouro.get()[0].textContent = `Logradouro: ${data.logradouro || ''}`;
+      $infoBairro.get()[0].textContent = `Bairro: ${data.bairro || ''}`;
+      $infoEstado.get()[0].textContent = `Estado: ${data.uf || ''}`;
+      $infoCidade.get()[0].textContent = `Cidade: ${data.localidade || ''}`;
+      $infoCEP.get()[0].textContent = `CEP: ${data.cep || ''}`;
+    }
+  
+    function clearData(){
+      return{
+        logradouro: '-',
+        bairro: '-',
+        uf: '-',
+        localidade: '-',
+        cep: '-'
+      }
+    }
+  
+    function getUrl(){
+      return `https://viacep.com.br/ws/${formatCep()}/json/`
+    }
+
+    function formatCep(){
+      return $inputCep.get()[0].value.replace(/\D/g,'')
+    }
+
+    function getMessage(type){
+      let valueCep = formatCep()
+      let messages = {
+        loading: `Buscando informações para o CEP ${valueCep}...`,
+        ok: `Endereço referente ao CEP ${valueCep}:`,
+        error: `Não encontramos o endereço para o CEP ${valueCep}.`
+      }
+      
+      $statusMessage.get()[0].textContent = messages[type]
+      
+    }
+  }
+  app()
+
+})(window.DOM)
