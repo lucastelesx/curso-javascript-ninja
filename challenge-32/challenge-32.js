@@ -13,7 +13,7 @@ Após enviar o POST, faça um GET no `server` e atualize a tabela para mostrar o
       init: function(){
         this.initVariables()
         this.companyInfo()
-        this.getCars()
+        this.getCars(this.createNewCar.bind(this))
         this.initEvents()
       },
       initVariables: function initVariables(){
@@ -29,17 +29,21 @@ Após enviar o POST, faça um GET no `server` e atualize a tabela para mostrar o
       initEvents: function initEvents(){
         this.$carForm.on('submit', this.handleSubmit.bind(this), false)
       },
-      getCars: function getCars(){
+      getCars: function getCars(callback){
         const getCarsList = new XMLHttpRequest()
         getCarsList.open('GET', 'http://localhost:3000/cars')
         getCarsList.send();
 
         getCarsList.onreadystatechange = function(e) {
-          if(getCarsList.readyState === 4){
+          if(isReady()){
             //console.log(getCarsList.responseText, getCarsList.status)
-            var test = getCarsList.responseText;
-            console.log(test[1])
-            createNewCar(getCarsList.responseText)
+            var carsData = JSON.parse(getCarsList.responseText);
+            carsData.forEach(car => {
+              const newCarRow = this.createNewCar(car)
+            })
+            callback(carsData)
+          }else{
+            console.error('Erro ao buscar dados dos carros:', getCarsList.statusText);
           }
         }
       },
@@ -86,7 +90,7 @@ Após enviar o POST, faça um GET no `server` e atualize a tabela para mostrar o
         return $td;
       },
       createNewCar: function createNewCar(car) {
-        const $tr = document.createElement('tr');
+        const $tr = document.createElement('tr');createNewCar(car)
         const imageCell = this.createTableCell(
           `<img src="${car.imageInput}" alt="Car Image" style="max-width:100px;"/>`, 
           true
