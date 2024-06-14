@@ -8,23 +8,10 @@
         this.companyInfo()
         this.initEvents()
         
-        
-        /* function getFormFields(){
-          const 
-          imageInput = $imgUrl.value,
-          brand = $brandModel.value,
-          year = $year.value,
-          plate = $plate.value,
-          color = $color.value
-          
-          const novoCarro = { imageInput,brand,year,plate,color }
-          return novoCarro;
-        } */
       },
       initEvents: function initEvents(){
         const $carForm = $('#car-form')
         $carForm.on('submit', this.handleSubmit, false)
-        // addCar();
       },
       handleSubmit: function handleFormSubmit(e){
         e.preventDefault()
@@ -47,7 +34,6 @@
           $plate = $('#plate'),
           $color = $('#color')     
 
-        // $imageElement.src= $imageInput.get().value
         $imageElement.setAttribute('src', $imageInput.get().value);
         $tdImage.appendChild($imageElement)
 
@@ -64,23 +50,10 @@
 
         return $fragment.appendChild($tr)
       },
-      /* updateTable: function updateTable(){
-        $carTable.innerHTML = ''
-        
-        cars.forEach((car) => {
-          const row = $carTable.insertRow()
-          row.insertCell(0).innerHTML = `<img src="${car.imageInput}" alt="car">`
-          row.insertCell(1).innerHTML = car.brand
-          row.insertCell(2).innerHTML = car.year
-          row.insertCell(3).innerHTML = car.plate
-          row.insertCell(4).innerHTML = car.color
-        })
-      }, */
       companyInfo: function companyInfo(){
         const ajax = new XMLHttpRequest()
         ajax.open('GET', 'company.json', true)
         ajax.responseType = 'json'
-        //ajax.onload = setInfoApp
         ajax.send()
         ajax.addEventListener('readystatechange', this.getCompanyInfo, false)
       },

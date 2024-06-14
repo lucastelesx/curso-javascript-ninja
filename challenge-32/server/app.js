@@ -16,6 +16,7 @@ app.get('/', function(req, res) {
 });
 
 app.use('/car', routes);
+app.use('/cars', routes);
 
 app.listen(port, function() {
   console.log('Listening on port http://localhost:%d', port);

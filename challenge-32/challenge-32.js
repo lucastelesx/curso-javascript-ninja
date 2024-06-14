@@ -1,35 +1,139 @@
 /*
-Já temos as funcionalidades de adicionar e remover um carro. Agora, vamos persistir esses dados, 
-salvando-os temporariamente na memória de um servidor.
-
-Nesse diretório do `challenge-32` tem uma pasta `server`. É um servidor simples, em NodeJS, para 
-que possamos utilizar para salvar as informações dos nossos carros.
-
-Para utilizá-lo, você vai precisar fazer o seguinte:
-
-- Via terminal, acesse o diretório `server`;
-- execute o comando `npm install` para instalar as dependências;
-- execute `node app.js` para iniciar o servidor.
-
-Ele irá ser executado na porta 3000, que pode ser acessada via browser no endereço: 
-`http://localhost:3000`
-
-O seu projeto não precisa estar rodando junto com o servidor. Ele pode estar em outra porta.
-As mudanças que você irá precisar fazer no seu projeto são:
-
 - Para listar os carros cadastrados ao carregar o seu projeto, faça um request GET no endereço
 `http://localhost:3000/car`
 - Para cadastrar um novo carro, faça um POST no endereço `http://localhost:3000/car`, enviando
-os seguintes campos:
-  - `image` com a URL da imagem do carro;
-  - `brandModel`, com a marca e modelo do carro;
-  - `year`, com o ano do carro;
-  - `plate`, com a placa do carro;
-  - `color`, com a cor do carro.
-
+os seguintes campos:`image`- `brandModel`,- `year`,- `plate`,- `color`,
 Após enviar o POST, faça um GET no `server` e atualize a tabela para mostrar o novo carro cadastrado.
 
-Crie uma branch `challenge-32` no seu projeto, envie um pull request lá e cole nesse arquivo a URL
-do pull request.
 */
-console.log('Link do pull request do seu projeto');
+(function($, APP) {
+  'use strict';
+  const app = (function (){
+    return{
+      init: function(){
+        this.initVariables()
+        this.companyInfo()
+        this.getCars()
+        this.initEvents()
+      },
+      initVariables: function initVariables(){
+        this.cars = [],
+        this.$table = $('table').get(),
+        this.$carForm = $('#car-form'),
+        this.$imgUrl = $('#image'),
+        this.$brandModel = $('#brand-model'),
+        this.$year = $('#year'),
+        this.$plate = $('#plate'),
+        this.$color = $('#color')
+      },
+      initEvents: function initEvents(){
+        this.$carForm.on('submit', this.handleSubmit.bind(this), false)
+      },
+      getCars: function getCars(){
+        const getCarsList = new XMLHttpRequest()
+        getCarsList.open('GET', 'http://localhost:3000/cars')
+        getCarsList.send();
+
+        getCarsList.onreadystatechange = function(e) {
+          if(getCarsList.readyState === 4){
+            //console.log(getCarsList.responseText, getCarsList.status)
+            var test = getCarsList.responseText;
+            console.log(test[1])
+            createNewCar(getCarsList.responseText)
+          }
+        }
+      },
+      getFormFields: function getFormFields() {
+        const imageInput = this.$imgUrl.get().value;
+        const brand = this.$brandModel.get().value;
+        const year = this.$year.get().value;
+        const plate = this.$plate.get().value;
+        const color = this.$color.get().value;
+      
+        const novoCarro = { imageInput, brand, year, plate, color };
+        return novoCarro;
+      },
+      handleSubmit: function handleFormSubmit(e){
+        e.preventDefault()
+        const car = app.getFormFields();
+        const $carTable = $('#car-list').get()
+        $carTable.appendChild(this.createNewCar(car))
+        this.clearFormFields();
+      },
+      clearFormFields: function clearFormFields() {
+        this.$imgUrl.get().value = '';
+        this.$brandModel.get().value = '';
+        this.$year.get().value = '';
+        this.$plate.get().value = '';
+        this.$color.get().value = '';
+      },
+      removeCarButton: function removeCarButton(){
+        const $btnRemoveCar =`
+          <td>
+            <button data-js="remove-car">Remover</button>
+          </td>
+        `
+        table.inserAdjacentHTML("afterend", $btnRemoveCar)
+      },
+      createTableCell: function createTableCell(content, isHTML = false) {
+        const $td = document.createElement('td');
+        if (isHTML) {
+          $td.innerHTML = content
+        }else{
+        $td.textContent = content
+        }
+        
+        return $td;
+      },
+      createNewCar: function createNewCar(car) {
+        const $tr = document.createElement('tr');
+        const imageCell = this.createTableCell(
+          `<img src="${car.imageInput}" alt="Car Image" style="max-width:100px;"/>`, 
+          true
+        )
+        $tr.appendChild(imageCell);
+        const values = [car.brand, car.year, car.plate, car.color];
+        
+        values.forEach((value) => {
+          const $td = this.createTableCell(value)
+          $tr.appendChild($td);
+        });
+
+        const $tdRemove = this.createTableCell(
+          `<td><button data-js=remove-car>Deletar</button></td>`,
+          true
+        )
+        $tdRemove.addEventListener('click', this.removeTableRow.bind(this, $tr));
+
+        $tr.appendChild($tdRemove)
+        
+        return $tr;
+      },
+      removeTableRow: function removeTableRow($tr) {
+        $tr.remove()
+      },
+      companyInfo: function companyInfo(){
+        const ajax = new XMLHttpRequest()
+        ajax.open('GET', 'company.json', true)
+        ajax.responseType = 'json'
+        ajax.send()
+        ajax.addEventListener('readystatechange', this.getCompanyInfo.bind(this), false)
+      },
+      getCompanyInfo: function getCompanyInfo(){
+        if(!this.isReady.call(this)){
+          return
+          const 
+          json = JSON.parse(this.responseText),
+          $companyName = $('#company-name'),
+          $companyPhone = $('#company-phone')
+          $companyName.textContent = json.name
+          $companyPhone.textContent = json.phone
+        }
+      },
+      isReady: function isReady(){
+        return this.readyState=== 4 && this.status == 200
+      }
+    }
+  })()
+  app.init()
+})(window.DOM, window.APP)

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    *,
+    body {
+      box-sizing: border-box;
+    }
+
+    html {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background-image: url("https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
+      background-image: url("shirobg.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: top center;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px;
+      width: 100%;
+      text-align: center;
+    }
+
+    main {
+      margin: 20px;
+      width: 80%;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 10px;
+    }
+
+    input,
+    button {
+      margin-top: 5px;
+    }
+
+    table {
+      margin-top: 20px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    table img {
+      max-width: 50px;
+      max-height: 100%;
+      display: block;
+      margin: auto;
+    }
+
+    table td {
+      padding: 2px;
+    }
+
+    table td:first-child {
+      width: 90px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1 id="company-name">Car Catalog</h1>
+    <p id="company-phone"></p>
+  </header>
+  <main>
+    <form id="car-form">
+      <label for="image">Image URL:</label>
+      <input type="url" id="image" name="image" required>
+
+      <label for="brand-model">Brand / Model:</label>
+      <input type="text" id="brand-model" name="brand-model" required>
+
+      <label for="year">Year:</label>
+      <input type="number" id="year" name="year" required>
+
+      <label for="plate">Plate:</label>
+      <input type="text" id="plate" name="plate" required>
+
+      <label for="color">Color:</label>
+      <input type="text" id="color" name="color" required>
+
+      <button type="submit">Cadastrar</button>
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Brand / Model</th>
+          <th>Year</th>
+          <th>Plate</th>
+          <th>Color</th>
+        </tr>
+      </thead>
+      <tbody id="car-list">
+      </tbody>
+    </table>
+  </main>
+  <script src="dom.js"></script>
+  <script src="app.js"></script>
+  <script src="challenge-30.js"></script>
+</body>
+
+</html>
